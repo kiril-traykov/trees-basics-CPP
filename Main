@@ -1,0 +1,114 @@
+#include <iostream>
+
+using namespace std;
+
+struct tree {
+	int data;
+	struct tree* left;
+	struct tree* right;
+};
+
+void insert(int data,struct tree**root) {
+
+	struct tree* newnode = new struct tree[sizeof(struct tree)];
+	struct tree* curr;
+	struct tree* parent;
+
+	newnode->data = data;
+	newnode->left = NULL;
+	newnode->right = NULL;
+
+	
+
+	if (*root == NULL) {
+		*root = newnode;
+		
+		return;
+	}
+	curr = *root;
+	int cnt = 0;
+	while (true) {
+		parent = curr;
+		
+		if (data < parent->data) {
+			curr = curr->left;
+
+			if (curr == NULL) {
+				parent->left = newnode;
+				
+				return;
+			}
+		}
+
+		else {
+			curr = curr->right;
+			if (curr == NULL) {
+				parent->right = newnode;
+				
+				return;
+			}
+			
+			
+		}
+
+	}
+
+}
+
+struct tree* search(struct tree*root, int data) {
+	auto current = root;
+
+	while (current ->data != data) {
+
+		cout << "Current node - " << current->data << endl;
+
+		if (data < current->data) {
+			current = current->left;
+		}
+		else {
+			
+			current = current->right;
+			
+		}
+		if (current == NULL) {
+			return NULL;
+		}
+
+	}
+	return current;
+}
+
+void traverse(struct tree* root) {
+	if (root != NULL) {
+		traverse(root->left);
+		traverse(root->right);
+		printf("%d ", root->data);
+	}
+}
+
+int main() {
+
+	struct tree* root = NULL;
+	
+	int array[7] = { 1,18,5,12,3,25,15 };
+
+	for (size_t i = 0; i < 7; i++)
+	{
+		insert(array[i],&root);
+	}
+
+	for (size_t i = 1; i < 25; i++)
+	{
+
+
+		auto tmp = search(root, i);
+
+		if (tmp != NULL) {
+			cout << tmp->data << endl;
+		}
+		else {
+			cout << "No such element on the list" << endl;
+		}
+	}
+	
+}
